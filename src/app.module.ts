@@ -4,6 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { InventoryModel } from './models/inventory.model';
+import { InventoryModule } from './routes/inventory/inventory.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { InventoryModel } from './models/inventory.model';
       autoLoadModels: true,
       synchronize: true,
     }),
+    InventoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],
