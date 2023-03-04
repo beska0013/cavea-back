@@ -25,7 +25,10 @@ export class InventoryController {
   }
 
   @Delete(':id')
-  deleteInventoryById(@Param('id') inventoryId: number) {
-    return this.srv.deleteInventoryById(inventoryId);
+  deleteInventoryById(
+    @Param('id') inventoryId: number,
+    @Body() body: { id: number },
+  ) {
+    return this.srv.deleteInventoryById(inventoryId, body.id);
   }
 }

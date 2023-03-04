@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { InventoryModel } from '../../models/inventory.model';
+import { Op } from 'sequelize';
 
 @Injectable()
 export class InventoryService {
@@ -22,7 +23,23 @@ export class InventoryService {
   async createNewInventories(newItems: any[]) {
     return await this.inventoryModel.bulkCreate(newItems);
   }
-  async deleteInventoryById(inventoryId: number) {
-    return await this.inventoryModel.destroy({ where: { id: inventoryId } });
+  async deleteInventoryById(inventoryId: number, nextId: number) {
+    const nextItem = await this.getNextItem(nextId);
+    return await this.inventoryModel
+      .destroy({ where: { id: inventoryId } })
+      .then(() => nextItem);
+  }
+
+  private getNextItem(id: number) {
+    return this.inventoryModel.findOne({
+      rejectOnEmpty: undefined,
+      where: {
+        id: {
+          [Op.gt]: id,
+        },
+      },
+      order: [['id', 'ASC']],
+      limit: 1,
+    });
   }
 }
