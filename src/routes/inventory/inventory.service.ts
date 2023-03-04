@@ -11,17 +11,17 @@ export class InventoryService {
   async getInventoryList(location = '', pageNumber = 1) {
     const limit = 20;
     const offset = (pageNumber - 1) * limit;
+    const attributes = ['id', 'name', 'location', 'price'];
     const options =
       location === ''
-        ? { limit, offset }
-        : { limit, offset, where: { location } };
+        ? { limit, offset, attributes }
+        : { limit, offset, attributes, where: { location } };
 
     return this.inventoryModel.findAndCountAll(options);
   }
   async createNewInventories(newItems: any[]) {
     return await this.inventoryModel.bulkCreate(newItems);
   }
-
   async deleteInventoryById(inventoryId: number) {
     return await this.inventoryModel.destroy({ where: { id: inventoryId } });
   }

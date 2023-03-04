@@ -14,7 +14,7 @@ export class InventoryModel extends Model<InventoryModel> {
   @Column({ type: DataType.STRING, allowNull: false })
   name: string;
 
-  @Column({ type: DataType.INTEGER, allowNull: false })
+  @Column({ type: DataType.FLOAT, allowNull: false })
   price: string;
 
   @Column({ type: DataType.STRING, allowNull: false })

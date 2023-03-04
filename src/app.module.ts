@@ -4,11 +4,11 @@ import { AppService } from './app.service';
 import { InventoryModule } from './routes/inventory/inventory.module';
 import { DatabaseModule } from './database/database.module';
 
+
+
+
 @Module({
-  imports: [
-    InventoryModule,
-    DatabaseModule,
-  ],
+  imports: [InventoryModule, DatabaseModule],
   controllers: [AppController],
   providers: [AppService],
 })

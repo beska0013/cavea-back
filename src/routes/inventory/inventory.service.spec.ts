@@ -4,9 +4,11 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { InventoryModel } from '../../models/inventory.model';
 import { DatabaseModule } from '../../database/database.module';
 
+
 jest.setTimeout(30000);
 describe('InventoryService', () => {
   let service: InventoryService;
+  const maxItemsNumber = 200000;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -17,13 +19,13 @@ describe('InventoryService', () => {
     service = module.get<InventoryService>(InventoryService);
   });
 
-  it('should be defined', () => {
+  it('should be defined', async () => {
     expect(service).toBeDefined();
   });
 
-  it('should create 200000 new items', async () => {
+  it(`should create ${maxItemsNumber} new items`, async () => {
     const newItems = [];
-    for (let i = 0; i < 200000; i++) {
+    for (let i = 0; i < maxItemsNumber; i++) {
       newItems.push({
         name: `Item ${i}`,
         location: createLocation(),
@@ -31,7 +33,7 @@ describe('InventoryService', () => {
       });
     }
     const result = await service.createNewInventories(newItems);
-    expect(result.length).toBe(200000);
+    expect(result.length).toBe(maxItemsNumber);
   });
 
   function createLocation() {
