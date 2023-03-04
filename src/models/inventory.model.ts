@@ -19,5 +19,4 @@ export class InventoryModel extends Model<InventoryModel> {
 
   @Column({ type: DataType.STRING, allowNull: false })
   location: string;
-
 }

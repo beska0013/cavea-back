@@ -1,23 +1,31 @@
-import { Controller, Delete, Get, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Query,
+} from '@nestjs/common';
+import { PostInventoryDto } from '../../dto/post-inventory.dto';
+import { InventoryService } from './inventory.service';
 
 @Controller('inventory')
 export class InventoryController {
+  constructor(private srv: InventoryService) {}
 
   @Get()
-  getInventory(): string {
-    return 'GET inventory';
+  getInventoryList(@Query('location') location = '', @Query('page') page = 1) {
+    return this.srv.getInventoryList(location, page);
   }
 
   @Post()
-  createInventory(): string {
-    return 'POST inventory';
-  }
-  @Delete()
-  deleteInventory(): string {
-    return 'DELETE inventory';
+  createInventory(@Body() newItems: PostInventoryDto[]) {
+    return this.srv.createNewInventories(newItems);
   }
 
-
-
-
+  @Delete(':id')
+  deleteInventoryById(@Param('id') inventoryId: number) {
+    return this.srv.deleteInventoryById(inventoryId);
+  }
 }
