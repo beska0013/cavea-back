@@ -9,7 +9,7 @@ export class InventoryService {
     @InjectModel(InventoryModel) private inventoryModel: typeof InventoryModel,
   ) {}
 
-  getAllLocations(){
+  getAllLocations() {
     const file = fs.readFileSync('./src/assets/locations.json', 'utf8');
     return JSON.parse(file);
   }
@@ -29,13 +29,9 @@ export class InventoryService {
             limit,
             offset: offset,
           } as unknown as FindOptions<any>);
-
-    return Promise.all([
-      this.inventoryModel.findAll(options),
-      this.inventoryModel.count(),
-    ]).then(([data, total]) => ({
-      rows: data,
-      total: total,
+    return this.inventoryModel.findAndCountAll(options).then((res) => ({
+      ...res,
+      limit: limit,
     }));
   }
   async createNewInventories(newItems: any[]) {

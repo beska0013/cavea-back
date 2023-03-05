@@ -15,8 +15,8 @@ export class InventoryController {
   constructor(private srv: InventoryService) {}
 
   @Get('locations')
-  getLocation(){
-      return this.srv.getAllLocations();
+  getLocation() {
+    return this.srv.getAllLocations();
   }
 
   @Get()
