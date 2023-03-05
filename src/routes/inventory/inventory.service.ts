@@ -17,8 +17,15 @@ export class InventoryService {
   async getInventoryList(location = '', pageNumber = 1) {
     const limit = 20;
     const offset = (pageNumber - 1) * limit;
-    const attributes = ['id', 'name', 'location', 'price', 'createdAt'];
-    const order = [['createdAt', 'DESC']];
+    const attributes = [
+      'id',
+      'name',
+      'location',
+      'price',
+      'createdAt',
+      'updatedAt',
+    ];
+    const order = [['updatedAt', 'DESC']];
     const options =
       location === ''
         ? ({ limit, offset, attributes, order } as FindOptions<any>)
@@ -38,21 +45,28 @@ export class InventoryService {
     return await this.inventoryModel.bulkCreate(newItems);
   }
   async deleteInventoryById(inventoryId: number, nextId: number) {
-    const nextItem = await this.getNextItem(nextId);
     return await this.inventoryModel
       .destroy({ where: { id: inventoryId } })
-      .then(() => nextItem);
+      .then(async (res) => {
+        const nextItem = await this.getLastUpdatedItem(nextId);
+        return {
+          deleted_id: inventoryId,
+          next_item: nextItem,
+          count: res,
+        };
+      });
   }
 
-  private getNextItem(id: number) {
+  private getLastUpdatedItem(updatedAt: number) {
     const options = {
-      rejectOnEmpty: undefined,
+      rejectOnEmpty: true,
       where: {
-        id: {
-          [Op.gt]: id,
+        updatedAt: {
+          [Op.lt]: updatedAt,
         },
       },
-      order: [['id', 'ASC']],
+      attributes: ['id', 'name', 'location', 'price', 'createdAt', 'updatedAt'],
+      order: [['updatedAt', 'DESC']],
       limit: 1,
     } as FindOptions<any>;
     return this.inventoryModel.findOne(options);

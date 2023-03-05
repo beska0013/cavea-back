@@ -30,6 +30,8 @@ describe('InventoryService', () => {
         name: `Item ${i}`,
         location: createLocation(),
         price: 9.99,
+        createdAt: new Date().getTime() + i,
+        updatedAt: new Date().getTime() + i,
       });
     }
     const result = await service.createNewInventories(newItems);
