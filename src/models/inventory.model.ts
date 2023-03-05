@@ -19,4 +19,10 @@ export class InventoryModel extends Model<InventoryModel> {
 
   @Column({ type: DataType.STRING, allowNull: false })
   location: string;
+
+  @Column({ type: DataType.DATE, allowNull: false })
+  createdAt: Date;
+
+  @Column({ type: DataType.DATE, allowNull: false })
+  updatedAt: Date;
 }

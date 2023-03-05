@@ -14,6 +14,11 @@ import { InventoryService } from './inventory.service';
 export class InventoryController {
   constructor(private srv: InventoryService) {}
 
+  @Get('locations')
+  getLocation(){
+      return this.srv.getAllLocations();
+  }
+
   @Get()
   getInventoryList(@Query('location') location = '', @Query('page') page = 1) {
     return this.srv.getInventoryList(location, page);
