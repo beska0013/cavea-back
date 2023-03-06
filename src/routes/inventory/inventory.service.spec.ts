@@ -4,7 +4,6 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { InventoryModel } from '../../models/inventory.model';
 import { DatabaseModule } from '../../database/database.module';
 
-
 jest.setTimeout(30000);
 describe('InventoryService', () => {
   let service: InventoryService;

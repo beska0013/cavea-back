@@ -59,7 +59,7 @@ export class InventoryService {
 
   private getLastUpdatedItem(updatedAt: number) {
     const options = {
-      rejectOnEmpty: true,
+      rejectOnEmpty: false,
       where: {
         updatedAt: {
           [Op.lt]: updatedAt,
